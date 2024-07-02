@@ -23,7 +23,3 @@ Thumbs.db
 /frontend/node_modules/
 /backend/node_modules/
 
-# Docker
-**/Dockerfile
-**/docker-compose.yml
-**/.env
