@@ -1,7 +1,7 @@
 build all three containers:
 
 ```
-docker-compose up --build" builds all containers
+docker-compose up --build
 ```
 
 separate build & runs from algo//backend//frontend/ folders
