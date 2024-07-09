@@ -1,4 +1,4 @@
-build all three containers:
+## build all three containers:
 
 ```
 docker-compose up --build
@@ -19,4 +19,22 @@ docker build -t chesscraft-frontend -f Dockerfile.frontend .
 docker run -p 3000:3000 chesscraft-frontend
 curl http://localhost:3000
 
+```
+
+## .env files:
+
+- in the root directory should look similar to this:
+
+```
+POSTGRES_DB=<db_name>
+POSTGRES_USER=<username>
+POSTGRES_PASSWORD=<user_password>
+```
+
+- in the backend/ directory:
+
+```
+PORT=3001
+DATABASE_URL=postgres://<user>:<password>@<host>:5432/<database>
+JWT_SECRET=<jwt_secret>
 ```

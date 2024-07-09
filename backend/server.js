@@ -1,11 +1,29 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const gameRoutes = require("./routes/gameRoutes");
+const userRoutes = require("./routes/userRoutes");
+const errorHandler = require("./middleware/errorHandler");
+
+const initDb = require("./models");
+initDb();
+require("dotenv").config();
+
 const app = express();
-const port = 3001;
 
-app.get('/', (req, res) => {
-  res.send('Hello from the backend!');
-});
+app.use(cors());
+app.use(bodyParser.json());
 
-app.listen(port, () => {
-  console.log(`Backend is running at http://localhost:${port}`);
-});
+app.use("/api/users", userRoutes);
+app.use("/api/games", gameRoutes);
+
+app.use(errorHandler);
+
+module.exports = app;
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
