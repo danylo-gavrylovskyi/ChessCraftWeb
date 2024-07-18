@@ -1,0 +1,53 @@
+.container {
+    background-color: #3d662b;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .header {
+    font-size: 24px;
+    color: #ffde56;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 5px;
+    margin: 20px 0;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .cell {
+    width: 20px;
+    height: 20px;
+    background-color: #a1c349;
+    border: 1px solid #ffde56;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  
+  .input {
+    width: 50px;
+    text-align: center;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .button {
+    background-color: #a1c349;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+  }
+  
