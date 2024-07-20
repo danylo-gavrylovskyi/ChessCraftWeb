@@ -1,53 +1,98 @@
 .container {
-    background-color: #3d662b;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .header {
-    font-size: 24px;
-    color: #ffde56;
-  }
-  
-  .grid {
-    display: grid;
-    gap: 5px;
-    margin: 20px 0;
-  }
-  
-  .row {
-    display: flex;
-  }
-  
-  .cell {
-    width: 20px;
-    height: 20px;
-    background-color: #a1c349;
-    border: 1px solid #ffde56;
-  }
-  
-  .controls {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-  }
-  
-  .input {
-    width: 50px;
-    text-align: center;
-  }
-  
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .button {
-    background-color: #a1c349;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-  }
-  
+  background-color: #566F10;
+  padding: 2%;
+  border-radius: 10px;
+  min-width: 40%;
+}
+
+.header {
+  font-size: 24px;
+  color: #FFD955;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5%;
+  background-color: #799A41;
+  padding: 2% 8%;
+  border-radius: 5px;
+  margin: 2% 0;
+  min-height: 40dvh;
+}
+
+.grid {
+  display: grid;
+  border: 1px solid #ffde56;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 4dvw;
+  height: 8dvh;
+  background-color: #799A41;
+  border: 1px solid #ffde56;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5%;
+  color: #FFD955;
+  font-size: 18px;
+  width: 30%;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+}
+
+.input {
+  text-align: center;
+  width: 25%;
+  height: 100%;
+  background-color: transparent;
+  border: 1px solid #FFD955;
+  border-radius: 5px;
+  font-family: "Itim", cursive;
+  color: #FFD955;
+  font-size: 18px;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #799A41;
+  border: 1px solid transparent;
+  padding: 1.5% 3%;
+  border-radius: 10px;
+  color: #FFD955;
+  font-size: 18px;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.button:hover {
+  border: 1px solid #FFD955;
+}
