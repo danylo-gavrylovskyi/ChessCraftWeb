@@ -16,6 +16,10 @@ const GameSelection: React.FC = () => {
     navigate('/board-dimensions');
   };
 
+  const closePopup = () => {
+    setShowModePopup(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>Select, or create a game</div>
@@ -76,58 +80,15 @@ const GameSelection: React.FC = () => {
       </div>
 
       {showModePopup && (
-        <div className={styles.popup}>
+        <div className={styles.overlay} onClick={closePopup}>
+        <div className={styles.popup} onClick={(e) => e.stopPropagation()}>
           <div>Select the mode:</div>
           <button className={styles.modeButton} onClick={() => handleModeSelect('play')}>Play</button>
           <button className={styles.modeButton} onClick={() => handleModeSelect('edit')}>Edit</button>
         </div>
+      </div>
       )}
     </div>
-
-    // <div className={styles.container}>
-    //   <div className={styles.header}>Select, or create a game</div>
-    //   <div className={styles.newGameButton}>+</div>
-    //   <div className={styles.tabs}>
-    //     <button className={`${styles.tabButton} ${styles.active}`}>My games</button>
-    //     <button className={styles.tabButton}>Examples</button>
-    //     <button className={styles.tabButton}>Public</button>
-    //   </div>
-    //   <div className={styles.gamesSection}>
-    //     <div className={styles.recentGames}>
-    //       <div className={styles.sectionTitle}>Recent games</div>
-    //       <div className={styles.gamesList}>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Game 1</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Game 2</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>A</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>B</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Cd</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Efg hi</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Jkl m</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>N</div>
-    //       </div>
-    //     </div>
-    //     <div className={styles.allGames}>
-    //       <div className={styles.sectionTitle}>My games</div>
-    //       <div className={styles.gamesList}>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Game 1</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Game 2</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>A</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>B</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Cd</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Efg hi</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>Jkl m</div>
-    //         <div className={styles.gameItem} onClick={handleGameClick}>N</div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   {showModePopup && (
-    //     <div className={styles.popup}>
-    //       <div>Select the mode:</div>
-    //       <button className={styles.modeButton} onClick={() => handleModeSelect('play')}>Play</button>
-    //       <button className={styles.modeButton} onClick={() => handleModeSelect('edit')}>Edit</button>
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 
