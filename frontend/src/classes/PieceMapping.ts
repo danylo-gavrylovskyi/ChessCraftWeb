@@ -36,7 +36,7 @@ class PieceMapping {
   static fromJSON(data: { [key: string]: any }): PieceMapping {
     const pieceMapping = new PieceMapping();
     for (const [symbol, pieceData] of Object.entries(data)) {
-      pieceMapping.addPiece(symbol, ChessPiece.fromJSON(pieceData));
+      pieceMapping.addPiece(symbol, new ChessPiece(pieceData));
     }
     return pieceMapping;
   }
