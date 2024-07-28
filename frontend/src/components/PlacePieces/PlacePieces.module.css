@@ -1,0 +1,124 @@
+.container {
+    background-color: #566F10;
+    padding: 2%;
+    border-radius: 10px;
+    min-width: 40%;
+}
+
+.header {
+    font-size: 24px;
+    color: #FFD955;
+    text-align: left;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5%;
+    background-color: #799A41;
+    padding: 2% 6%;
+    border-radius: 5px;
+    margin: 2% 0;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5%;
+    color: #FFD955;
+    font-size: 18px;
+}
+
+.instructions p {
+    margin: 0;
+}
+
+.pieces {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    height: 55%;
+}
+
+.piece {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #566F10;
+    border: 2px solid transparent;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.piece:hover {
+    background-color: #5c7711;
+}
+
+.piece.active {
+    border: 2px solid #FFD955;
+}
+
+.pieceImage {
+    width: 50px;
+    height: 50px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 4dvw);
+    grid-template-rows: repeat(8, 8dvh);
+    gap: 0;
+    border-collapse: collapse;
+}
+
+.row {
+    display: contents;
+}
+
+.cell {
+    width: 4dvw;
+    height: 8dvh;
+    background-color: #799A41;
+    border: 1px solid #ffde56;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cellPiece {
+    width: 40px;
+    height: 40px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #799A41;
+    border: 1px solid transparent;
+    padding: 1.5% 3%;
+    border-radius: 10px;
+    color: #FFD955;
+    font-size: 18px;
+    transition: all 0.1s;
+    cursor: pointer;
+}
+
+.button:hover {
+    border: 1px solid #FFD955;
+}
