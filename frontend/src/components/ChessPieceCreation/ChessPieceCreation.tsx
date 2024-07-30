@@ -55,6 +55,33 @@ const ChessPieceCreation: React.FC = () => {
     }
   };
 
+  const handleCellClick = (row: number, col: number) => {
+    if (activePiece) {
+      const move = { x: col - 3, y: 3 - row, m: true, c: true };
+      const moves = activePiece.moves || [];
+      const moveIndex = moves.findIndex(
+        (m) => m.x === move.x && m.y === move.y
+      );
+
+      const updatedMoves =
+        moveIndex === -1
+          ? [...moves, move]
+          : moves.filter((_, index) => index !== moveIndex);
+
+      const updatedPiece = new ChessPiece({
+        ...activePiece,
+        moves: updatedMoves,
+      });
+      setActivePiece(updatedPiece);
+    }
+  };
+
+  const handlePrintPiece = () => {
+    if (activePiece) {
+      console.log(activePiece);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -102,7 +129,6 @@ const ChessPieceCreation: React.FC = () => {
                   </div>
                   <div className={styles.labelAndInput}>
                     <label htmlFor="piece-symbol">Symbol: </label>
-
                     <input
                       type="text"
                       value={activePiece.symbol}
@@ -159,13 +185,43 @@ const ChessPieceCreation: React.FC = () => {
                 </div>
                 <div className={styles.defineMoves}>
                   <h3>Define the moves</h3>
-                  {/* Add the 7x7 grid here */}
+                  <table className={styles.movesTable}>
+                    <tbody>
+                      {Array.from({ length: 7 }).map((_, row) => (
+                        <tr key={row}>
+                          {Array.from({ length: 7 }).map((_, col) => (
+                            <td
+                              key={col}
+                              className={
+                                row === 3 && col === 3
+                                  ? styles.centralCell
+                                  : activePiece.moves.some(
+                                      (move) =>
+                                        move.x === col - 3 && move.y === 3 - row
+                                    )
+                                  ? styles.activeCell
+                                  : styles.inactiveCell
+                              }
+                              onClick={() => handleCellClick(row, col)}
+                            >
+                              {row === 3 && col === 3 && (
+                                <div className={styles.centralDot}></div>
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
                 <div className={styles.buttonsColumn}>
                   <button className={styles.button}>Add</button>
                   <button className={styles.button}>Save</button>
                   <button className={styles.button}>Duplicate</button>
                   <button className={styles.button}>Trash</button>
+                  <button className={styles.button} onClick={handlePrintPiece}>
+                    Print
+                  </button>
                 </div>
               </div>
             </>
