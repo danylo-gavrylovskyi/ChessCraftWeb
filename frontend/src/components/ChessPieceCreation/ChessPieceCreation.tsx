@@ -3,7 +3,31 @@ import { useNavigate } from "react-router-dom";
 import { useGameset } from "../../GamesetContext";
 import PieceCard from "../PieceCard/PieceCard";
 import styles from "./ChessPieceCreation.module.css";
-import ChessPiece from "../../classes/ChessPiece";
+import ChessPiece, { OptionalProperties } from "../../classes/ChessPiece";
+
+const optionalPropertyDescriptions: { [key: string]: string } = {
+  "!": "Most important piece of the game",
+  x: "When captured, kills the opponent's piece",
+  n: "Can change direction during the move",
+  y: "Moves other pieces when making a move (as though they flee)",
+  d: "Lives in others (gets another 'body' when captures)",
+  l: "Moves other pieces when making a move (as though they follow him)",
+  f: "Combining two or more pieces into a single, more powerful entity",
+  s: "Doesn't move when capturing others",
+  c: "Clones on each move",
+  g: "Can gather on one cell in quantities more than 1",
+  "+": "Can spawn other pieces",
+  p: "Can promote to another piece after reaching the end of the board",
+  v: "Invisible on the board",
+  e: "Explodes when captured",
+  i: "After capture makes another move",
+  u: "Cannot be captured",
+  "?": "Can change itself into another piece during the move",
+  r: "Kills other pieces when approaches them",
+  o: "Can change other pieces into another piece during the move",
+  t: "Undoes opponent's moves in the area where he goes",
+  a: "Learns new moves from others",
+};
 
 const ChessPieceCreation: React.FC = () => {
   const { activeGame } = useGameset();
@@ -16,6 +40,19 @@ const ChessPieceCreation: React.FC = () => {
 
   const handlePieceClick = (piece: ChessPiece) => {
     setActivePiece(piece);
+  };
+
+  const handleCheckboxChange = (property: keyof OptionalProperties) => {
+    if (activePiece) {
+      const updatedPiece = new ChessPiece({
+        ...activePiece,
+        optional: {
+          ...activePiece.optional,
+          [property]: !activePiece.optional[property],
+        },
+      });
+      setActivePiece(updatedPiece);
+    }
   };
 
   return (
@@ -94,7 +131,31 @@ const ChessPieceCreation: React.FC = () => {
                   </div>
                 </div>
                 <div className={styles.optionalProperties}>
-                  {/* Add the grid of checkboxes here */}
+                  {Object.keys(optionalPropertyDescriptions).map((property) => (
+                    <div key={property} className={styles.checkboxContainer}>
+                      <input
+                        type="checkbox"
+                        id={`checkbox-${property}`}
+                        checked={
+                          !!activePiece.optional[
+                            property as keyof OptionalProperties
+                          ]
+                        }
+                        onChange={() =>
+                          handleCheckboxChange(
+                            property as keyof OptionalProperties
+                          )
+                        }
+                      />
+                      <label
+                        htmlFor={`checkbox-${property}`}
+                        className={styles.checkboxLabel}
+                        title={optionalPropertyDescriptions[property]}
+                      >
+                        {property}
+                      </label>
+                    </div>
+                  ))}
                 </div>
                 <div className={styles.defineMoves}>
                   <h3>Define the moves</h3>
@@ -122,7 +183,7 @@ const ChessPieceCreation: React.FC = () => {
             width="20%"
             viewBox="0 0 28 48"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="<http://www.w3.org/2000/svg>"
           >
             <path
               d="M1.35864 27.2664C-0.447998 25.4598 -0.447998 22.5258 1.35864 20.7192L19.8586 2.21915C21.1883 0.889464 23.1684 0.49923 24.9028 1.22189C26.6372 1.94454 27.7645 3.6211 27.7645 5.50001V42.5C27.7645 44.3645 26.6372 46.0555 24.9028 46.7781C23.1684 47.5008 21.1883 47.0961 19.8586 45.7809L1.35864 27.2809V27.2664Z"
@@ -140,7 +201,7 @@ const ChessPieceCreation: React.FC = () => {
             width="20%"
             viewBox="0 0 28 48"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="<http://www.w3.org/2000/svg>"
           >
             <path
               d="M26.6415 27.2664C28.4481 25.4598 28.4481 22.5258 26.6415 20.7191L8.1415 2.21915C6.81182 0.889464 4.83174 0.49923 3.09736 1.22189C1.36299 1.94454 0.235641 3.6211 0.235641 5.50001V42.5C0.235641 44.3645 1.36299 46.0555 3.09736 46.7781C4.83174 47.5008 6.81182 47.0961 8.1415 45.7809L26.6415 27.2809V27.2664Z"
