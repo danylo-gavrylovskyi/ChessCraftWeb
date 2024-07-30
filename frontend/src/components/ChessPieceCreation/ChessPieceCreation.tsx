@@ -49,39 +49,49 @@ const ChessPieceCreation: React.FC = () => {
                       }}
                     />
                   </div>
-                  <input
-                    type="text"
-                    value={activePiece.name}
-                    onChange={(e) => {
-                      const updatedPiece = new ChessPiece({
-                        ...activePiece,
-                        name: e.target.value,
-                      });
-                      setActivePiece(updatedPiece);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    value={activePiece.symbol}
-                    onChange={(e) => {
-                      const updatedPiece = new ChessPiece({
-                        ...activePiece,
-                        symbol: e.target.value,
-                      });
-                      setActivePiece(updatedPiece);
-                    }}
-                  />
-                  <input
-                    type="number"
-                    value={activePiece.maxSteps}
-                    onChange={(e) => {
-                      const updatedPiece = new ChessPiece({
-                        ...activePiece,
-                        maxSteps: Number(e.target.value),
-                      });
-                      setActivePiece(updatedPiece);
-                    }}
-                  />
+                  <div className={styles.labelAndInput}>
+                    <label htmlFor="piece-name">Name: </label>
+                    <input
+                      type="text"
+                      value={activePiece.name}
+                      onChange={(e) => {
+                        const updatedPiece = new ChessPiece({
+                          ...activePiece,
+                          name: e.target.value,
+                        });
+                        setActivePiece(updatedPiece);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.labelAndInput}>
+                    <label htmlFor="piece-symbol">Symbol: </label>
+
+                    <input
+                      type="text"
+                      value={activePiece.symbol}
+                      onChange={(e) => {
+                        const updatedPiece = new ChessPiece({
+                          ...activePiece,
+                          symbol: e.target.value,
+                        });
+                        setActivePiece(updatedPiece);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.labelAndInput}>
+                    <label htmlFor="piece-spm">Steps/move: </label>
+                    <input
+                      type="number"
+                      value={activePiece.maxSteps}
+                      onChange={(e) => {
+                        const updatedPiece = new ChessPiece({
+                          ...activePiece,
+                          maxSteps: Number(e.target.value),
+                        });
+                        setActivePiece(updatedPiece);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className={styles.optionalProperties}>
                   {/* Add the grid of checkboxes here */}
@@ -91,10 +101,10 @@ const ChessPieceCreation: React.FC = () => {
                   {/* Add the 7x7 grid here */}
                 </div>
                 <div className={styles.buttonsColumn}>
-                  <button>Add</button>
-                  <button>Save</button>
-                  <button>Duplicate</button>
-                  <button>Trash</button>
+                  <button className={styles.button}>Add</button>
+                  <button className={styles.button}>Save</button>
+                  <button className={styles.button}>Duplicate</button>
+                  <button className={styles.button}>Trash</button>
                 </div>
               </div>
             </>
