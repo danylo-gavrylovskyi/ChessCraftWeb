@@ -13,7 +13,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: /Dockerfile.backend
+      dockerfile: Dockerfile.backend
     ports:
       - "3001:3001"
     depends_on:
