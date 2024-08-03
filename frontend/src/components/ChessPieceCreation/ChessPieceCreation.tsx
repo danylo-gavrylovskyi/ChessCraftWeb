@@ -250,7 +250,7 @@ const ChessPieceCreation: React.FC = () => {
         </button>
         <button
           className={styles.button}
-          onClick={() => navigate("/chess-piece-creation")}
+          onClick={() => navigate("/place-pieces")}
         >
           Next{" "}
           <svg

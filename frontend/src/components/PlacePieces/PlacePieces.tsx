@@ -64,7 +64,7 @@ const PlacePieces: React.FC = () => {
                 </div>
             </div>
             <div className={styles.buttons}>
-                <button className={styles.button} onClick={() => navigate('/')}>
+                <button className={styles.button} onClick={() => navigate('/chess-piece-creation')}>
                     <svg width="20%" viewBox="0 0 28 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.35864 27.2664C-0.447998 25.4598 -0.447998 22.5258 1.35864 20.7192L19.8586 2.21915C21.1883 0.889464 23.1684 0.49923 24.9028 1.22189C26.6372 1.94454 27.7645 3.6211 27.7645 5.50001V42.5C27.7645 44.3645 26.6372 46.0555 24.9028 46.7781C23.1684 47.5008 21.1883 47.0961 19.8586 45.7809L1.35864 27.2809V27.2664Z" fill="#FFD955" />
                     </svg>
