@@ -1,0 +1,61 @@
+.panel {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    background-color: #566F10;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.panel.closing {
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.menu-panel {
+    right: 0;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.menu-panel.closing {
+    animation-name: slideOutRight;
+}
+
+.settings-panel {
+    left: 0;
+    animation: slideInLeft 0.3s ease-out;
+}
+
+.settings-panel.closing {
+    animation-name: slideOutLeft;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}

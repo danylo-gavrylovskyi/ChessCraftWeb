@@ -1,0 +1,19 @@
+.game-setup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #566F10;
+}
+
+.game-setup select,
+.game-setup button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #799A41;
+    color: #FFD955;
+    border: 2px solid #FFD955;
+    border-radius: 5px;
+}
