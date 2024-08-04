@@ -164,7 +164,7 @@ const ChessPieceCreation: React.FC = () => {
                         id={`checkbox-${property}`}
                         checked={
                           !!activePiece.optional[
-                            property as keyof OptionalProperties
+                          property as keyof OptionalProperties
                           ]
                         }
                         onChange={() =>
@@ -196,11 +196,11 @@ const ChessPieceCreation: React.FC = () => {
                                 row === 3 && col === 3
                                   ? styles.centralCell
                                   : activePiece.moves.some(
-                                      (move) =>
-                                        move.x === col - 3 && move.y === 3 - row
-                                    )
-                                  ? styles.activeCell
-                                  : styles.inactiveCell
+                                    (move) =>
+                                      move.x === col - 3 && move.y === 3 - row
+                                  )
+                                    ? styles.activeCell
+                                    : styles.inactiveCell
                               }
                               onClick={() => handleCellClick(row, col)}
                             >

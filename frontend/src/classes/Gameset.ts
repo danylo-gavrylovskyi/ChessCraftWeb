@@ -5,8 +5,8 @@
   interface GamesetConfig {
     pieces: any[];
     board: any;
-    white_coefficients: [number, number, number, number];
-    black_coefficients: [number, number, number, number];
+    whiteCoefficients: [number, number, number, number];
+    blackCoefficients: [number, number, number, number];
   }
 
   export class Gameset {
@@ -21,16 +21,16 @@
       this.board = ChessBoard.fromJSON(config.board);
       this.pieceMapping = new PieceMapping();
       this.pieceMapping.addAllPieces(this.pieces);
-      this.whiteCoefficients = config.white_coefficients;
-      this.blackCoefficients = config.black_coefficients;
+      this.whiteCoefficients = config.whiteCoefficients;
+      this.blackCoefficients = config.blackCoefficients;
     }
 
     toJSON() {
       return {
         pieces: this.pieces.map((piece) => piece.toJSON()),
         board: this.board.toJSON(),
-        white_coefficients: this.whiteCoefficients,
-        black_coefficients: this.blackCoefficients,
+        whiteCoefficients: this.whiteCoefficients,
+        blackCoefficients: this.blackCoefficients,
       };
     }
   }

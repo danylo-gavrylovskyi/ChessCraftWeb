@@ -105,11 +105,11 @@ const sampleGamesetConfig = {
       ["rw", "2w", "4w", "Qw", "Kw", "4w", "2w", "rw"],
     ],
   },
-  white_coefficients: [
+  whiteCoefficients: [
     1.0725970447440374, 0.5290833037881657, 0.5915854658364857,
     109.26594499651583,
   ],
-  black_coefficients: [
+  blackCoefficients: [
     1.0725970447440374, 0.5290833037881657, 0.5915854658364857,
     109.26594499651583,
   ],
