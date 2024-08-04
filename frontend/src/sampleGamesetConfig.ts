@@ -1,31 +1,24 @@
-const sampleGamesetConfig = {
+import { GamesetConfig } from "./classes/Gameset";
+
+const sampleGamesetConfig: GamesetConfig = {
   pieces: [
     {
       name: "Pawn",
       symbol: "1",
-      moves: [{ x: 1, y: 0, m: true, c: true }],
-      maxSteps: 2,
-      value: 1.625,
-      maxCellsReachable: 2,
-      optional: { p: true },
-    },
-    {
-      name: "Bishop",
-      symbol: "4",
       moves: [
-        { x: 1, y: 1, m: true, c: true },
-        { x: 1, y: -1, m: true, c: true },
-        { x: -1, y: 1, m: true, c: true },
-        { x: -1, y: -1, m: true, c: true },
+        { x: 0, y: 1, m: true, c: false },
+        { x: 0, y: 2, m: true, c: false },
+        { x: 1, y: 1, m: false, c: true },
+        { x: -1, y: 1, m: false, c: true },
       ],
-      maxSteps: 8,
-      value: 8.75,
-      maxCellsReachable: 13,
-      optional: {},
+      maxSteps: 2,
+      maxCellsReachable: 2,
+      value: 1,
+      optional: "p",
     },
     {
       name: "Rook",
-      symbol: "r",
+      symbol: "R",
       moves: [
         { x: 1, y: 0, m: true, c: true },
         { x: -1, y: 0, m: true, c: true },
@@ -33,13 +26,13 @@ const sampleGamesetConfig = {
         { x: 0, y: -1, m: true, c: true },
       ],
       maxSteps: 8,
-      value: 14.0,
       maxCellsReachable: 14,
-      optional: {},
+      value: 5,
+      optional: "",
     },
     {
       name: "Knight",
-      symbol: "2",
+      symbol: "N",
       moves: [
         { x: 2, y: 1, m: true, c: true },
         { x: 2, y: -1, m: true, c: true },
@@ -51,68 +44,70 @@ const sampleGamesetConfig = {
         { x: -1, y: -2, m: true, c: true },
       ],
       maxSteps: 1,
-      value: 5.25,
       maxCellsReachable: 8,
-      optional: {},
+      value: 3,
+      optional: "",
+    },
+    {
+      name: "Bishop",
+      symbol: "B",
+      moves: [
+        { x: 1, y: 1, m: true, c: true },
+        { x: 1, y: -1, m: true, c: true },
+        { x: -1, y: 1, m: true, c: true },
+        { x: -1, y: -1, m: true, c: true },
+      ],
+      maxSteps: 8,
+      maxCellsReachable: 13,
+      value: 3,
+      optional: "",
     },
     {
       name: "Queen",
       symbol: "Q",
       moves: [
         { x: 1, y: 0, m: true, c: true },
-        { x: 1, y: 1, m: true, c: true },
-        { x: 0, y: 1, m: true, c: true },
-        { x: -1, y: 1, m: true, c: true },
         { x: -1, y: 0, m: true, c: true },
-        { x: -1, y: -1, m: true, c: true },
+        { x: 0, y: 1, m: true, c: true },
         { x: 0, y: -1, m: true, c: true },
+        { x: 1, y: 1, m: true, c: true },
         { x: 1, y: -1, m: true, c: true },
+        { x: -1, y: 1, m: true, c: true },
+        { x: -1, y: -1, m: true, c: true },
       ],
       maxSteps: 8,
-      value: 22.75,
       maxCellsReachable: 27,
-      optional: {},
+      value: 9,
+      optional: "",
     },
     {
       name: "King",
       symbol: "K",
       moves: [
         { x: 1, y: 0, m: true, c: true },
-        { x: 1, y: 1, m: true, c: true },
-        { x: 0, y: 1, m: true, c: true },
-        { x: -1, y: 1, m: true, c: true },
         { x: -1, y: 0, m: true, c: true },
-        { x: -1, y: -1, m: true, c: true },
+        { x: 0, y: 1, m: true, c: true },
         { x: 0, y: -1, m: true, c: true },
+        { x: 1, y: 1, m: true, c: true },
         { x: 1, y: -1, m: true, c: true },
+        { x: -1, y: 1, m: true, c: true },
+        { x: -1, y: -1, m: true, c: true },
       ],
       maxSteps: 1,
-      value: 5.75,
       maxCellsReachable: 8,
-      optional: { "+": true },
+      value: 100,
+      optional: "!",
     },
   ],
-  gameState: {
-    turn: 1,
-    board: [
-      ["rb", "2b", "4b", "Qb", "Kb", "4b", "2b", "rb"],
-      ["1b", "1b", "1b", "1b", "1b", "1b", "1b", "1b"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["1w", "1w", "1w", "1w", "1w", "1w", "1w", "1w"],
-      ["rw", "2w", "4w", "Qw", "Kw", "4w", "2w", "rw"],
-    ],
+  board: {
+    rows: 8,
+    columns: 8,
+    board: Array(8)
+      .fill(null)
+      .map(() => Array(8).fill(null)),
   },
-  white_coefficients: [
-    1.0725970447440374, 0.5290833037881657, 0.5915854658364857,
-    109.26594499651583,
-  ],
-  black_coefficients: [
-    1.0725970447440374, 0.5290833037881657, 0.5915854658364857,
-    109.26594499651583,
-  ],
+  white_coefficients: [1, 1, 1, 1], // Ensure this is a tuple with exactly 4 numbers
+  black_coefficients: [1, 1, 1, 1], // Ensure this is a tuple with exactly 4 numbers
 };
 
 export default sampleGamesetConfig;

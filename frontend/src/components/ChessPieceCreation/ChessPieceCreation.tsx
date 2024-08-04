@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useGameset } from "../../GamesetContext";
 import PieceCard from "../PieceCard/PieceCard";
 import styles from "./ChessPieceCreation.module.css";
-import ChessPiece, { OptionalProperties } from "../../classes/ChessPiece";
+import ChessPiece from "../../classes/ChessPiece";
 
 const optionalPropertyDescriptions: { [key: string]: string } = {
   "!": "Most important piece of the game",
@@ -42,14 +42,17 @@ const ChessPieceCreation: React.FC = () => {
     setActivePiece(piece);
   };
 
-  const handleCheckboxChange = (property: keyof OptionalProperties) => {
+  const handleCheckboxChange = (property: string) => {
     if (activePiece) {
+      const optionalSet = new Set(activePiece.optional);
+      if (optionalSet.has(property)) {
+        optionalSet.delete(property);
+      } else {
+        optionalSet.add(property);
+      }
       const updatedPiece = new ChessPiece({
         ...activePiece,
-        optional: {
-          ...activePiece.optional,
-          [property]: !activePiece.optional[property],
-        },
+        optional: Array.from(optionalSet).join(""),
       });
       setActivePiece(updatedPiece);
     }
@@ -157,31 +160,28 @@ const ChessPieceCreation: React.FC = () => {
                   </div>
                 </div>
                 <div className={styles.optionalProperties}>
-                  {Object.keys(optionalPropertyDescriptions).map((property) => (
-                    <div key={property} className={styles.checkboxContainer}>
-                      <input
-                        type="checkbox"
-                        id={`checkbox-${property}`}
-                        checked={
-                          !!activePiece.optional[
-                            property as keyof OptionalProperties
-                          ]
-                        }
-                        onChange={() =>
-                          handleCheckboxChange(
-                            property as keyof OptionalProperties
-                          )
-                        }
-                      />
-                      <label
-                        htmlFor={`checkbox-${property}`}
-                        className={styles.checkboxLabel}
+                  {Object.keys(optionalPropertyDescriptions).map(
+                    (property, index) => (
+                      <div
+                        key={index}
+                        className={styles.checkboxContainer}
                         title={optionalPropertyDescriptions[property]}
                       >
-                        {property}
-                      </label>
-                    </div>
-                  ))}
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${property}`}
+                          checked={activePiece.optional.includes(property)}
+                          onChange={() => handleCheckboxChange(property)}
+                        />
+                        <label
+                          htmlFor={`checkbox-${property}`}
+                          className={styles.checkboxLabel}
+                        >
+                          {property}
+                        </label>
+                      </div>
+                    )
+                  )}
                 </div>
                 <div className={styles.defineMoves}>
                   <h3>Define the moves</h3>
