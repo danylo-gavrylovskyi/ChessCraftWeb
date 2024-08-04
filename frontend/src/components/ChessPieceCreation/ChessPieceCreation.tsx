@@ -82,6 +82,13 @@ const ChessPieceCreation: React.FC = () => {
     }
   };
 
+  if (!activeGame) {
+    return (
+      <div>No active game</div>
+    )
+  }
+  const { rows, columns } = activeGame?.board;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -187,9 +194,9 @@ const ChessPieceCreation: React.FC = () => {
                   <h3>Define the moves</h3>
                   <table className={styles.movesTable}>
                     <tbody>
-                      {Array.from({ length: 7 }).map((_, row) => (
+                      {Array.from({ length: rows }).map((_, row) => (
                         <tr key={row}>
-                          {Array.from({ length: 7 }).map((_, col) => (
+                          {Array.from({ length: columns }).map((_, col) => (
                             <td
                               key={col}
                               className={
@@ -205,7 +212,7 @@ const ChessPieceCreation: React.FC = () => {
                               onClick={() => handleCellClick(row, col)}
                             >
                               {row === 3 && col === 3 && (
-                                <div className={styles.centralDot}></div>
+                                <div className={styles.centralDot}></div> // on the custom board dimensions center is not always 3,3
                               )}
                             </td>
                           ))}
