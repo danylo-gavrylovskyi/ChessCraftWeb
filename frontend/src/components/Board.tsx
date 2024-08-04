@@ -1,4 +1,6 @@
 import React from 'react';
+import ChessPiece from './ChessPiece';
+import { getInitialChessPieces } from '../utils/chessSetup';
 import '../styles/Board.css';
 
 interface BoardProps {
@@ -6,6 +8,7 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({ size }) => {
+    const board = getInitialChessPieces(size);
     const rows = Array.from({ length: size }, (_, i) => size - i);
     const cols = Array.from({ length: size }, (_, i) => String.fromCharCode(65 + i));
 
@@ -26,7 +29,9 @@ const Board: React.FC<BoardProps> = ({ size }) => {
                         <div
                             key={`${row}${col}`}
                             className={`cell ${isBlackSquare(rowIndex, colIndex) ? 'black' : ''}`}
-                        ></div>
+                        >
+                            {board[rowIndex][colIndex] && <ChessPiece type={board[rowIndex][colIndex]!.type} color={board[rowIndex][colIndex]!.color} />}
+                        </div>
                     ))
                 ))}
             </div>
