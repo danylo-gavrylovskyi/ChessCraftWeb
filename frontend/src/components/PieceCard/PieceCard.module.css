@@ -21,7 +21,7 @@
 }
 
 .card:hover {
-  background-color: var(--ternary-color);
+  background-color: var(--ternary-color) !important;
 }
 
 .card.active {
@@ -29,8 +29,10 @@
 }
 
 .svgPlaceholder {
-  width: 50px; /* Adjust size as needed */
-  height: 50px; /* Adjust size as needed */
+  width: 50px;
+  /* Adjust size as needed */
+  height: 50px;
+  /* Adjust size as needed */
   display: flex;
   align-items: center;
   justify-content: center;

@@ -87,7 +87,7 @@ const ChessPieceCreation: React.FC = () => {
       <div>No active game</div>
     )
   }
-  const { rows, columns } = activeGame?.board;
+  const { rows, columns } = activeGame.board;
 
   return (
     <div className={styles.container}>

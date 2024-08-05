@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useGameset } from '../../GamesetContext';
+
+import PieceCard from '../PieceCard/PieceCard';
+
 import styles from './PlacePieces.module.css';
 
-const pieces = [
-    { name: 'Bishop', img: '/assets/bishop.png' },
-    { name: 'Rook', img: '/assets/rook.png' },
-    { name: 'Pawn', img: '/assets/pawn.png' },
-    { name: 'Knight', img: '/assets/knight.png' }
-];
-
 const PlacePieces: React.FC = () => {
+    const { activeGame } = useGameset();
+
     const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
-    const [board, setBoard] = useState<(string | null)[][]>(Array(8).fill(Array(8).fill(null)));
+    const boardArray = Array(activeGame?.board.rows ?? 8).fill(Array(activeGame?.board.columns ?? 8).fill(null))
+    const [board, setBoard] = useState<(string | null)[][]>(boardArray);
     const navigate = useNavigate();
 
     const handlePieceClick = (piece: string) => {
@@ -28,6 +28,13 @@ const PlacePieces: React.FC = () => {
         }
     };
 
+    if (!activeGame) {
+        return (
+            <div>No active game</div>
+        )
+    }
+    const gamePieces = activeGame.pieces;
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>Place the pieces on the board</div>
@@ -35,19 +42,26 @@ const PlacePieces: React.FC = () => {
                 <div className={styles.instructions}>
                     <p>Click on the piece, then on the square</p>
                     <div className={styles.pieces}>
-                        {pieces.map(piece => (
-                            <div
-                                key={piece.name}
-                                className={`${styles.piece} ${selectedPiece === piece.name ? styles.active : ''}`}
-                                onClick={() => handlePieceClick(piece.name)}
-                            >
-                                <img src={piece.img} alt={piece.name} className={styles.pieceImage} />
-                                <span>{piece.name}</span>
-                            </div>
-                        ))}
+                        {gamePieces.map((piece, index) => (
+                            <PieceCard
+                                key={index}
+                                name={piece.name}
+                                character={piece.symbol}
+                                isActive={selectedPiece === piece.symbol}
+                                backgroundColor='#566F10'
+                                onClick={() => handlePieceClick(piece.symbol)}
+                            />
+                        )
+                        )}
                     </div>
                 </div>
-                <div className={styles.board}>
+                <div
+                    className={styles.board}
+                    style={{
+                        gridTemplateColumns: `repeat(${activeGame.board.columns}, 1fr)`,
+                        gridTemplateRows: `repeat(${activeGame.board.rows}, 1fr)`
+                    }}
+                >
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex} className={styles.row}>
                             {row.map((cell, colIndex) => (
@@ -56,9 +70,16 @@ const PlacePieces: React.FC = () => {
                                     className={styles.cell}
                                     onClick={() => handleCellClick(rowIndex, colIndex)}
                                 >
-                                    {cell && <img src={pieces.find(piece => piece.name === cell)?.img} alt={cell} className={styles.cellPiece} />}
+                                    {cell && <i
+                                        className={styles.cellPiece}
+                                        style={{
+                                            WebkitMaskImage: `url("/assets/SVGs/${cell}.svg")`,
+                                            maskImage: `url("/assets/SVGs/${cell}.svg")`,
+                                        }}
+                                    />}
                                 </div>
-                            ))}
+                            )
+                            )}
                         </div>
                     ))}
                 </div>
