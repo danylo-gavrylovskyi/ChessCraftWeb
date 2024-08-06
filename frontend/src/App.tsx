@@ -4,7 +4,7 @@ import GameSelection from "./components/GameSelection/GameSelection";
 import BoardDimensions from "./components/BoardDimensions/BoardDimensions";
 import ChessPieceCreation from "./components/ChessPieceCreation/ChessPieceCreation";
 import { GamesetProvider } from "./GamesetContext";
-import Popup from "./components/Popup/Popup";
+import Popup from "./components/AuthPopup/AuthPopup";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -18,17 +18,25 @@ const App: React.FC = () => {
     <GamesetProvider>
       <BrowserRouter>
         <div className="App">
-          <button onClick={showLoginPopup}>Login</button>
-          <button onClick={showRegisterPopup}>Register</button>
+          <header className="header">
+            <button className="auth-button" onClick={showLoginPopup}>
+              Login
+            </button>
+            <button className="auth-button" onClick={showRegisterPopup}>
+              Register
+            </button>
+          </header>
           {popupType && <Popup type={popupType} onClose={closePopup} />}
-          <Routes>
-            <Route path="/" element={<GameSelection />} />
-            <Route path="/board-dimensions" element={<BoardDimensions />} />
-            <Route
-              path="/chess-piece-creation"
-              element={<ChessPieceCreation />}
-            />
-          </Routes>
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<GameSelection />} />
+              <Route path="/board-dimensions" element={<BoardDimensions />} />
+              <Route
+                path="/chess-piece-creation"
+                element={<ChessPieceCreation />}
+              />
+            </Routes>
+          </main>
         </div>
       </BrowserRouter>
     </GamesetProvider>

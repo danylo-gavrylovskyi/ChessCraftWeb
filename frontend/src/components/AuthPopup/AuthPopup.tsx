@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Popup.module.css";
+import styles from "./AuthPopup.module.css";
 
 interface PopupProps {
   type: "login" | "register";
@@ -46,24 +46,26 @@ const Popup: React.FC<PopupProps> = ({ type, onClose }) => {
   };
 
   return (
-    <div className="popup active">
-      <h2>{type === "login" ? "Login" : "Register"}</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={type === "login" ? handleLogin : handleRegister}>
-        {type === "login" ? "Login" : "Register"}
-      </button>
-      <button onClick={onClose}>Close</button>
+    <div className={styles.overlay}>
+      <div className={styles.popup}>
+        <h2>{type === "login" ? "Login" : "Register"}</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={type === "login" ? handleLogin : handleRegister}>
+          {type === "login" ? "Login" : "Register"}
+        </button>
+        <button onClick={onClose}>Close</button>
+      </div>
     </div>
   );
 };

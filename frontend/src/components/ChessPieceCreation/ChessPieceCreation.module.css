@@ -186,8 +186,8 @@ label {
 .svgPlaceholder {
   width: 100%;
   height: 100%;
-  padding: 20% 0;
   display: flex;
+  margin: 10%;
   flex: 10;
   align-items: center;
   justify-content: center;
