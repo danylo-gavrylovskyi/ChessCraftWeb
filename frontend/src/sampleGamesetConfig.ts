@@ -106,8 +106,9 @@ const sampleGamesetConfig: GamesetConfig = {
       .fill(null)
       .map(() => Array(8).fill(null)),
   },
-  white_coefficients: [1, 1, 1, 1], // Ensure this is a tuple with exactly 4 numbers
-  black_coefficients: [1, 1, 1, 1], // Ensure this is a tuple with exactly 4 numbers
+  name: "Chess",
+  white_coefficients: [1, 1, 1, 1],
+  black_coefficients: [1, 1, 1, 1],
 };
 
 export default sampleGamesetConfig;

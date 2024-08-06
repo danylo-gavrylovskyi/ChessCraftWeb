@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGameset } from "../../GamesetContext";
 import { Gameset } from "../../classes/Gameset";
@@ -10,9 +10,34 @@ const GameSelection: React.FC = () => {
   const { setActiveGame } = useGameset();
   const [showModePopup, setShowModePopup] = useState(false);
   const [activeTab, setActiveTab] = useState("myGames");
+  const [games, setGames] = useState<any[]>([]);
 
-  const handleGameClick = () => {
-    setShowModePopup(true);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const url = `${backendUrl}/api/games`;
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = await response.json();
+        console.log("token: ", localStorage.getItem("token"));
+        console.log(data);
+        setGames(data);
+      } catch (error) {
+        console.error("Error fetching games:", error);
+      }
+    };
+
+    fetchGames();
+  }, []);
+
+  const handleGameClick = (game: any) => {
+    setActiveGame(new Gameset(game.config));
+    navigate("/board-dimensions");
   };
 
   const handleModeSelect = (mode: string) => {
@@ -50,30 +75,15 @@ const GameSelection: React.FC = () => {
           <div className={styles.limeBg}>
             <div className={styles.sectionTitle}>Recent games</div>
             <div className={styles.gamesList}>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                Game 1
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                Game 2
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                A
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                B
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                Cd
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                Efg hi
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                Jkl m
-              </div>
-              <div className={styles.gameItem} onClick={handleGameClick}>
-                N
-              </div>
+              {games.map((game) => (
+                <div
+                  key={game.id}
+                  className={styles.gameItem}
+                  onClick={() => handleGameClick(game)}
+                >
+                  {game.name}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -95,61 +105,31 @@ const GameSelection: React.FC = () => {
             >
               Examples
             </button>
-            <button
-              className={`${styles.tabButton} ${
-                activeTab === "public" ? styles.active : ""
-              }`}
-              onClick={() => setActiveTab("public")}
-            >
-              Public
-            </button>
           </div>
-
           <div className={styles.gamesList}>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              Game 1
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              Game 2
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              A
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              B
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              Cd
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              Efg hi
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              Jkl m
-            </div>
-            <div className={styles.gameItem} onClick={handleGameClick}>
-              N
-            </div>
+            {activeTab === "myGames" && games.length > 0 ? (
+              games.map((game) => (
+                <div
+                  key={game.id}
+                  className={styles.gameItem}
+                  onClick={() => handleGameClick(game)}
+                >
+                  {game.name}
+                </div>
+              ))
+            ) : (
+              <div>No games found.</div>
+            )}
           </div>
         </div>
       </div>
-
       {showModePopup && (
-        <div className={styles.overlay} onClick={closePopup}>
-          <div className={styles.popup} onClick={(e) => e.stopPropagation()}>
-            <div>Select the mode:</div>
-            <button
-              className={styles.modeButton}
-              onClick={() => handleModeSelect("play")}
-            >
-              Play
-            </button>
-            <button
-              className={styles.modeButton}
-              onClick={() => handleModeSelect("edit")}
-            >
-              Edit
-            </button>
+        <div className={styles.popup}>
+          <div className={styles.popupContent}>
+            <h2>Select Mode</h2>
+            <button onClick={() => handleModeSelect("new")}>New Game</button>
+            <button onClick={() => handleModeSelect("load")}>Load Game</button>
+            <button onClick={closePopup}>Close</button>
           </div>
         </div>
       )}
