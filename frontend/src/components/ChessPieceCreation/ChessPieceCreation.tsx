@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { useGameset } from "../../GamesetContext";
-import PieceCard from "../PieceCard/PieceCard";
-import styles from "./ChessPieceCreation.module.css";
+
 import ChessPiece, { OptionalProperties } from "../../classes/ChessPiece";
+import { Gameset } from "../../classes/Gameset";
+
+import PieceCard from "../PieceCard/PieceCard";
+
+import styles from "./ChessPieceCreation.module.css";
 
 const optionalPropertyDescriptions: { [key: string]: string } = {
   "!": "Most important piece of the game",
@@ -30,7 +35,7 @@ const optionalPropertyDescriptions: { [key: string]: string } = {
 };
 
 const ChessPieceCreation: React.FC = () => {
-  const { activeGame } = useGameset();
+  const { activeGame, setActiveGame } = useGameset();
   const [gamePieces, setGamePieces] = useState(activeGame?.pieces || []);
   const [activePiece, setActivePiece] = useState<ChessPiece | null>(
     gamePieces[Math.floor(Math.random() * gamePieces.length)] || null
@@ -40,6 +45,22 @@ const ChessPieceCreation: React.FC = () => {
 
   const handlePieceClick = (piece: ChessPiece) => {
     setActivePiece(piece);
+  };
+
+  const handleSavePiece = () => {
+    if (activePiece) {
+      const updatedPieces = gamePieces.map((piece) =>
+        piece.symbol === activePiece.symbol ? activePiece : piece
+      );
+      setGamePieces(updatedPieces);
+    }
+  };
+
+  const handleSaveGame = () => {
+    if (activeGame) {
+      const updatedGame = { ...activeGame, pieces: gamePieces };
+      setActiveGame(new Gameset(updatedGame));
+    }
   };
 
   const handleCheckboxChange = (property: keyof OptionalProperties) => {
@@ -52,6 +73,7 @@ const ChessPieceCreation: React.FC = () => {
         },
       });
       setActivePiece(updatedPiece);
+      handleSavePiece();
     }
   };
 
@@ -73,6 +95,7 @@ const ChessPieceCreation: React.FC = () => {
         moves: updatedMoves,
       });
       setActivePiece(updatedPiece);
+      handleSavePiece();
     }
   };
 
@@ -131,6 +154,7 @@ const ChessPieceCreation: React.FC = () => {
                           name: e.target.value,
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -145,6 +169,7 @@ const ChessPieceCreation: React.FC = () => {
                           symbol: e.target.value,
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -159,6 +184,7 @@ const ChessPieceCreation: React.FC = () => {
                           maxSteps: Number(e.target.value),
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -223,7 +249,7 @@ const ChessPieceCreation: React.FC = () => {
                 </div>
                 <div className={styles.buttonsColumn}>
                   <button className={styles.button}>Add</button>
-                  <button className={styles.button}>Save</button>
+                  <button className={styles.button} onClick={handleSaveGame}>Save</button>
                   <button className={styles.button}>Duplicate</button>
                   <button className={styles.button}>Trash</button>
                   <button className={styles.button} onClick={handlePrintPiece}>
