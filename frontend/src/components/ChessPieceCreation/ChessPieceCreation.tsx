@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { useGameset } from "../../GamesetContext";
-import PieceCard from "../PieceCard/PieceCard";
-import styles from "./ChessPieceCreation.module.css";
+
 import ChessPiece, { OptionalProperties } from "../../classes/ChessPiece";
+import { Gameset } from "../../classes/Gameset";
+
+import PieceCard from "../PieceCard/PieceCard";
+
+import styles from "./ChessPieceCreation.module.css";
 
 const optionalPropertyDescriptions: { [key: string]: string } = {
   "!": "Most important piece of the game",
@@ -30,7 +35,7 @@ const optionalPropertyDescriptions: { [key: string]: string } = {
 };
 
 const ChessPieceCreation: React.FC = () => {
-  const { activeGame } = useGameset();
+  const { activeGame, setActiveGame } = useGameset();
   const [gamePieces, setGamePieces] = useState(activeGame?.pieces || []);
   const [activePiece, setActivePiece] = useState<ChessPiece | null>(
     gamePieces[Math.floor(Math.random() * gamePieces.length)] || null
@@ -40,6 +45,22 @@ const ChessPieceCreation: React.FC = () => {
 
   const handlePieceClick = (piece: ChessPiece) => {
     setActivePiece(piece);
+  };
+
+  const handleSavePiece = () => {
+    if (activePiece) {
+      const updatedPieces = gamePieces.map((piece) =>
+        piece.symbol === activePiece.symbol ? activePiece : piece
+      );
+      setGamePieces(updatedPieces);
+    }
+  };
+
+  const handleSaveGame = () => {
+    if (activeGame) {
+      const updatedGame = { ...activeGame, pieces: gamePieces };
+      setActiveGame(new Gameset(updatedGame));
+    }
   };
 
   const handleCheckboxChange = (property: keyof OptionalProperties) => {
@@ -52,6 +73,7 @@ const ChessPieceCreation: React.FC = () => {
         },
       });
       setActivePiece(updatedPiece);
+      handleSavePiece();
     }
   };
 
@@ -73,6 +95,7 @@ const ChessPieceCreation: React.FC = () => {
         moves: updatedMoves,
       });
       setActivePiece(updatedPiece);
+      handleSavePiece();
     }
   };
 
@@ -81,6 +104,13 @@ const ChessPieceCreation: React.FC = () => {
       console.log(activePiece);
     }
   };
+
+  if (!activeGame) {
+    return (
+      <div>No active game</div>
+    )
+  }
+  const { rows, columns } = activeGame.board;
 
   return (
     <div className={styles.container}>
@@ -124,6 +154,7 @@ const ChessPieceCreation: React.FC = () => {
                           name: e.target.value,
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -138,6 +169,7 @@ const ChessPieceCreation: React.FC = () => {
                           symbol: e.target.value,
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -152,6 +184,7 @@ const ChessPieceCreation: React.FC = () => {
                           maxSteps: Number(e.target.value),
                         });
                         setActivePiece(updatedPiece);
+                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -164,7 +197,7 @@ const ChessPieceCreation: React.FC = () => {
                         id={`checkbox-${property}`}
                         checked={
                           !!activePiece.optional[
-                            property as keyof OptionalProperties
+                          property as keyof OptionalProperties
                           ]
                         }
                         onChange={() =>
@@ -187,25 +220,25 @@ const ChessPieceCreation: React.FC = () => {
                   <h3>Define the moves</h3>
                   <table className={styles.movesTable}>
                     <tbody>
-                      {Array.from({ length: 7 }).map((_, row) => (
+                      {Array.from({ length: rows }).map((_, row) => (
                         <tr key={row}>
-                          {Array.from({ length: 7 }).map((_, col) => (
+                          {Array.from({ length: columns }).map((_, col) => (
                             <td
                               key={col}
                               className={
                                 row === 3 && col === 3
                                   ? styles.centralCell
                                   : activePiece.moves.some(
-                                      (move) =>
-                                        move.x === col - 3 && move.y === 3 - row
-                                    )
-                                  ? styles.activeCell
-                                  : styles.inactiveCell
+                                    (move) =>
+                                      move.x === col - 3 && move.y === 3 - row
+                                  )
+                                    ? styles.activeCell
+                                    : styles.inactiveCell
                               }
                               onClick={() => handleCellClick(row, col)}
                             >
                               {row === 3 && col === 3 && (
-                                <div className={styles.centralDot}></div>
+                                <div className={styles.centralDot}></div> // on the custom board dimensions center is not always 3,3
                               )}
                             </td>
                           ))}
@@ -216,7 +249,7 @@ const ChessPieceCreation: React.FC = () => {
                 </div>
                 <div className={styles.buttonsColumn}>
                   <button className={styles.button}>Add</button>
-                  <button className={styles.button}>Save</button>
+                  <button className={styles.button} onClick={handleSaveGame}>Save</button>
                   <button className={styles.button}>Duplicate</button>
                   <button className={styles.button}>Trash</button>
                   <button className={styles.button} onClick={handlePrintPiece}>
@@ -250,7 +283,7 @@ const ChessPieceCreation: React.FC = () => {
         </button>
         <button
           className={styles.button}
-          onClick={() => navigate("/chess-piece-creation")}
+          onClick={() => navigate("/place-pieces")}
         >
           Next{" "}
           <svg

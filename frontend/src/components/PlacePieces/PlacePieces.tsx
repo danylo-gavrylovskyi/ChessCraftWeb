@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useGameset } from '../../GamesetContext';
+
+import PieceCard from '../PieceCard/PieceCard';
+
 import styles from './PlacePieces.module.css';
 
-const pieces = [
-    { name: 'Bishop', img: '/assets/bishop.png' },
-    { name: 'Rook', img: '/assets/rook.png' },
-    { name: 'Pawn', img: '/assets/pawn.png' },
-    { name: 'Knight', img: '/assets/knight.png' }
-];
-
 const PlacePieces: React.FC = () => {
+    const { activeGame } = useGameset();
+
     const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
-    const [board, setBoard] = useState<(string | null)[][]>(Array(8).fill(Array(8).fill(null)));
+    const boardArray = Array(activeGame?.board.rows ?? 8).fill(Array(activeGame?.board.columns ?? 8).fill(null))
+    const [board, setBoard] = useState<(string | null)[][]>(boardArray);
     const navigate = useNavigate();
 
     const handlePieceClick = (piece: string) => {
@@ -28,6 +28,13 @@ const PlacePieces: React.FC = () => {
         }
     };
 
+    if (!activeGame) {
+        return (
+            <div>No active game</div>
+        )
+    }
+    const gamePieces = activeGame.pieces;
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>Place the pieces on the board</div>
@@ -35,19 +42,26 @@ const PlacePieces: React.FC = () => {
                 <div className={styles.instructions}>
                     <p>Click on the piece, then on the square</p>
                     <div className={styles.pieces}>
-                        {pieces.map(piece => (
-                            <div
-                                key={piece.name}
-                                className={`${styles.piece} ${selectedPiece === piece.name ? styles.active : ''}`}
-                                onClick={() => handlePieceClick(piece.name)}
-                            >
-                                <img src={piece.img} alt={piece.name} className={styles.pieceImage} />
-                                <span>{piece.name}</span>
-                            </div>
-                        ))}
+                        {gamePieces.map((piece, index) => (
+                            <PieceCard
+                                key={index}
+                                name={piece.name}
+                                character={piece.symbol}
+                                isActive={selectedPiece === piece.symbol}
+                                backgroundColor='#566F10'
+                                onClick={() => handlePieceClick(piece.symbol)}
+                            />
+                        )
+                        )}
                     </div>
                 </div>
-                <div className={styles.board}>
+                <div
+                    className={styles.board}
+                    style={{
+                        gridTemplateColumns: `repeat(${activeGame.board.columns}, 1fr)`,
+                        gridTemplateRows: `repeat(${activeGame.board.rows}, 1fr)`
+                    }}
+                >
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex} className={styles.row}>
                             {row.map((cell, colIndex) => (
@@ -56,15 +70,22 @@ const PlacePieces: React.FC = () => {
                                     className={styles.cell}
                                     onClick={() => handleCellClick(rowIndex, colIndex)}
                                 >
-                                    {cell && <img src={pieces.find(piece => piece.name === cell)?.img} alt={cell} className={styles.cellPiece} />}
+                                    {cell && <i
+                                        className={styles.cellPiece}
+                                        style={{
+                                            WebkitMaskImage: `url("/assets/SVGs/${cell}.svg")`,
+                                            maskImage: `url("/assets/SVGs/${cell}.svg")`,
+                                        }}
+                                    />}
                                 </div>
-                            ))}
+                            )
+                            )}
                         </div>
                     ))}
                 </div>
             </div>
             <div className={styles.buttons}>
-                <button className={styles.button} onClick={() => navigate('/')}>
+                <button className={styles.button} onClick={() => navigate('/chess-piece-creation')}>
                     <svg width="20%" viewBox="0 0 28 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.35864 27.2664C-0.447998 25.4598 -0.447998 22.5258 1.35864 20.7192L19.8586 2.21915C21.1883 0.889464 23.1684 0.49923 24.9028 1.22189C26.6372 1.94454 27.7645 3.6211 27.7645 5.50001V42.5C27.7645 44.3645 26.6372 46.0555 24.9028 46.7781C23.1684 47.5008 21.1883 47.0961 19.8586 45.7809L1.35864 27.2809V27.2664Z" fill="#FFD955" />
                     </svg>
