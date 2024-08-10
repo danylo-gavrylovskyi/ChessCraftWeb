@@ -8,6 +8,7 @@ const auth = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.userData = { id: decodedToken.id };
+    console.log("user authorized");
     next();
   } catch (error) {
     error.statusCode = 401;

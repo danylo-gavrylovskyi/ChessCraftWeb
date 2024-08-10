@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 exports.createGame = async (req, res, next) => {
   const { name, config } = req.body;
   const userId = req.userData.id;
+  // validate the config
 
   try {
     const result = await pool.query(

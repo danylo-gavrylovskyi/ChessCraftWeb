@@ -8,10 +8,41 @@ button {
 
 .App {
   display: flex;
+  padding: 3px;
   flex-direction: column;
   align-items: center;
   background-color: #2e4720;
-  min-height: 100vh;
-  padding: 20px;
+  min-height: 90vh;
   font-family: "Itim", cursive;
+}
+
+.header {
+  width: 100%;
+  flex: 1;
+  padding: 3px 0;
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+}
+
+.auth-button {
+  background-color: #ffdd57;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #ffcc33;
+}
+
+.main-content {
+  width: 100%;
+  flex: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

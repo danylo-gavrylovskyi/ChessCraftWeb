@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useGameset } from "../../GamesetContext";
-
-import ChessPiece, { OptionalProperties } from "../../classes/ChessPiece";
-import { Gameset } from "../../classes/Gameset";
-
 import PieceCard from "../PieceCard/PieceCard";
-
 import styles from "./ChessPieceCreation.module.css";
+import ChessPiece from "../../classes/ChessPiece";
 
+const gridDimensionality = 7; // the field for defining piece moves should be limited, not so for game board.
+// If we wanted to provide total freedom on defining the moves,
+// we would need to cover each possible placement on the defined board,
+// or make the dimensionality at least twice as big as the original board.
 const optionalPropertyDescriptions: { [key: string]: string } = {
   "!": "Most important piece of the game",
   x: "When captured, kills the opponent's piece",
@@ -42,38 +41,26 @@ const ChessPieceCreation: React.FC = () => {
   );
 
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  console.log(backendUrl);
 
   const handlePieceClick = (piece: ChessPiece) => {
     setActivePiece(piece);
   };
 
-  const handleSavePiece = () => {
+  const handleCheckboxChange = (property: string) => {
     if (activePiece) {
-      const updatedPieces = gamePieces.map((piece) =>
-        piece.symbol === activePiece.symbol ? activePiece : piece
-      );
-      setGamePieces(updatedPieces);
-    }
-  };
-
-  const handleSaveGame = () => {
-    if (activeGame) {
-      const updatedGame = { ...activeGame, pieces: gamePieces };
-      setActiveGame(new Gameset(updatedGame));
-    }
-  };
-
-  const handleCheckboxChange = (property: keyof OptionalProperties) => {
-    if (activePiece) {
+      const optionalSet = new Set(activePiece.optional);
+      if (optionalSet.has(property)) {
+        optionalSet.delete(property);
+      } else {
+        optionalSet.add(property);
+      }
       const updatedPiece = new ChessPiece({
         ...activePiece,
-        optional: {
-          ...activePiece.optional,
-          [property]: !activePiece.optional[property],
-        },
+        optional: Array.from(optionalSet).join(""),
       });
       setActivePiece(updatedPiece);
-      handleSavePiece();
     }
   };
 
@@ -95,7 +82,6 @@ const ChessPieceCreation: React.FC = () => {
         moves: updatedMoves,
       });
       setActivePiece(updatedPiece);
-      handleSavePiece();
     }
   };
 
@@ -105,12 +91,45 @@ const ChessPieceCreation: React.FC = () => {
     }
   };
 
+  const handleSave = async () => {
+    if (activePiece && backendUrl && activeGame) {
+      try {
+        const response = await fetch(`${backendUrl}/api/games`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            name: activeGame.name,
+            config: activeGame,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(response);
+          throw new Error(
+            `HTTP error! Status: ${response.status}. Error: ${response}`
+          );
+        }
+
+        const data = await response.json();
+        console.log("Game saved successfully:", data);
+        alert("Game saved successfully!");
+        // Optionally navigate to another page or reset state
+        navigate("/board-dimensions");
+      } catch (error) {
+        console.error("Save error:", error);
+        alert("Failed to save the game. Please try again.");
+      }
+    } else {
+      alert("No active piece or backend URL defined.");
+    }
+  };
+
   if (!activeGame) {
-    return (
-      <div>No active game</div>
-    )
+    return <div>No active game</div>;
   }
-  const { rows, columns } = activeGame.board;
 
   return (
     <div className={styles.container}>
@@ -154,7 +173,6 @@ const ChessPieceCreation: React.FC = () => {
                           name: e.target.value,
                         });
                         setActivePiece(updatedPiece);
-                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -169,7 +187,6 @@ const ChessPieceCreation: React.FC = () => {
                           symbol: e.target.value,
                         });
                         setActivePiece(updatedPiece);
-                        handleSavePiece();
                       }}
                     />
                   </div>
@@ -184,72 +201,77 @@ const ChessPieceCreation: React.FC = () => {
                           maxSteps: Number(e.target.value),
                         });
                         setActivePiece(updatedPiece);
-                        handleSavePiece();
                       }}
                     />
                   </div>
                 </div>
                 <div className={styles.optionalProperties}>
-                  {Object.keys(optionalPropertyDescriptions).map((property) => (
-                    <div key={property} className={styles.checkboxContainer}>
-                      <input
-                        type="checkbox"
-                        id={`checkbox-${property}`}
-                        checked={
-                          !!activePiece.optional[
-                          property as keyof OptionalProperties
-                          ]
-                        }
-                        onChange={() =>
-                          handleCheckboxChange(
-                            property as keyof OptionalProperties
-                          )
-                        }
-                      />
-                      <label
-                        htmlFor={`checkbox-${property}`}
-                        className={styles.checkboxLabel}
+                  {Object.keys(optionalPropertyDescriptions).map(
+                    (property, index) => (
+                      <div
+                        key={index}
+                        className={styles.checkboxContainer}
                         title={optionalPropertyDescriptions[property]}
                       >
-                        {property}
-                      </label>
-                    </div>
-                  ))}
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${property}`}
+                          checked={activePiece.optional.includes(property)}
+                          onChange={() => handleCheckboxChange(property)}
+                        />
+                        <label
+                          htmlFor={`checkbox-${property}`}
+                          className={styles.checkboxLabel}
+                        >
+                          {property}
+                        </label>
+                      </div>
+                    )
+                  )}
                 </div>
                 <div className={styles.defineMoves}>
                   <h3>Define the moves</h3>
                   <table className={styles.movesTable}>
                     <tbody>
-                      {Array.from({ length: rows }).map((_, row) => (
-                        <tr key={row}>
-                          {Array.from({ length: columns }).map((_, col) => (
-                            <td
-                              key={col}
-                              className={
-                                row === 3 && col === 3
-                                  ? styles.centralCell
-                                  : activePiece.moves.some(
-                                    (move) =>
-                                      move.x === col - 3 && move.y === 3 - row
-                                  )
-                                    ? styles.activeCell
-                                    : styles.inactiveCell
-                              }
-                              onClick={() => handleCellClick(row, col)}
-                            >
-                              {row === 3 && col === 3 && (
-                                <div className={styles.centralDot}></div> // on the custom board dimensions center is not always 3,3
-                              )}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
+                      {Array.from({ length: gridDimensionality }).map(
+                        (_, row) => (
+                          <tr key={row}>
+                            {Array.from({ length: gridDimensionality }).map(
+                              (_, col) => (
+                                <td
+                                  key={col}
+                                  className={
+                                    row === 3 && col === 3
+                                      ? styles.centralCell
+                                      : activePiece.moves.some(
+                                          (move) =>
+                                            move.x === col - 3 &&
+                                            move.y === 3 - row
+                                        )
+                                      ? styles.activeCell
+                                      : styles.inactiveCell
+                                  }
+                                  onClick={() => handleCellClick(row, col)}
+                                >
+                                  {row === Math.floor(gridDimensionality / 2) &&
+                                    col ===
+                                      Math.floor(gridDimensionality / 2) && (
+                                      <div className={styles.centralDot}></div>
+                                    )}
+                                </td>
+                              )
+                            )}
+                          </tr>
+                        )
+                      )}
                     </tbody>
                   </table>
                 </div>
                 <div className={styles.buttonsColumn}>
                   <button className={styles.button}>Add</button>
-                  <button className={styles.button} onClick={handleSaveGame}>Save</button>
+                  <button className={styles.button} onClick={handleSave}>
+                    Save
+                  </button>
                   <button className={styles.button}>Duplicate</button>
                   <button className={styles.button}>Trash</button>
                   <button className={styles.button} onClick={handlePrintPiece}>
@@ -272,7 +294,7 @@ const ChessPieceCreation: React.FC = () => {
             width="20%"
             viewBox="0 0 28 48"
             fill="none"
-            xmlns="<http://www.w3.org/2000/svg>"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
               d="M1.35864 27.2664C-0.447998 25.4598 -0.447998 22.5258 1.35864 20.7192L19.8586 2.21915C21.1883 0.889464 23.1684 0.49923 24.9028 1.22189C26.6372 1.94454 27.7645 3.6211 27.7645 5.50001V42.5C27.7645 44.3645 26.6372 46.0555 24.9028 46.7781C23.1684 47.5008 21.1883 47.0961 19.8586 45.7809L1.35864 27.2809V27.2664Z"
@@ -290,7 +312,7 @@ const ChessPieceCreation: React.FC = () => {
             width="20%"
             viewBox="0 0 28 48"
             fill="none"
-            xmlns="<http://www.w3.org/2000/svg>"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
               d="M26.6415 27.2664C28.4481 25.4598 28.4481 22.5258 26.6415 20.7191L8.1415 2.21915C6.81182 0.889464 4.83174 0.49923 3.09736 1.22189C1.36299 1.94454 0.235641 3.6211 0.235641 5.50001V42.5C0.235641 44.3645 1.36299 46.0555 3.09736 46.7781C4.83174 47.5008 6.81182 47.0961 8.1415 45.7809L26.6415 27.2809V27.2664Z"
