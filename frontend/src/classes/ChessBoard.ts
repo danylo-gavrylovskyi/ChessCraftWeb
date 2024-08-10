@@ -29,8 +29,9 @@ class ChessBoard {
   static fromJSON(data: {
     rows: number;
     columns: number;
-    board: any[][];
+    board: any[][] | null;
   }): ChessBoard {
+    if (!data.board) return new ChessBoard(data.rows, data.columns);
     const boardData = data.board.map((row) =>
       row.map((pieceData) =>
         pieceData ? ChessBoardPiece.fromJSON(pieceData) : null

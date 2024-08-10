@@ -9,30 +9,6 @@ function isValidPosition(
   return 0 <= row && row < rows && 0 <= col && col < cols;
 }
 
-interface OptionalProperties {
-  x: boolean; // trap
-  n: boolean; // ninja
-  y: boolean; // scary
-  d: boolean; // demon
-  l: boolean; // leader
-  f: boolean; // fusion
-  s: boolean; // shooter
-  c: boolean; // cloning
-  g: boolean; // grouping
-  "+": boolean; // fortress
-  p: boolean; // promotion
-  v: boolean; // invisible
-  e: boolean; // explosive
-  i: boolean; // insatiable
-  u: boolean; // unbreakable
-  "?": boolean; // randomSelf
-  r: boolean; // radioactive
-  o: boolean; // randomOthers
-  t: boolean; // timeTraveler
-  a: boolean; // activeLearner
-  "!": boolean; // isSpecial
-}
-
 class ChessPiece {
   name: string;
   symbol: string;
@@ -40,7 +16,7 @@ class ChessPiece {
   maxSteps: number;
   maxCellsReachable: number;
   value: number;
-  optional: OptionalProperties;
+  optional: string; // Store active optional properties as a string
 
   constructor(json: {
     name: string;
@@ -49,7 +25,7 @@ class ChessPiece {
     maxSteps: number;
     maxCellsReachable: number;
     value: number;
-    optional: OptionalProperties;
+    optional: string; // Expect a string for optional properties
   }) {
     this.name = json.name;
     this.symbol = json.symbol;
@@ -144,5 +120,4 @@ class ChessPiece {
   }
 }
 
-export type { OptionalProperties };
 export default ChessPiece;
