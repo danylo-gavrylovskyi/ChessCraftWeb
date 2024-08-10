@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGameset } from "../../GamesetContext";
 import PieceCard from "../PieceCard/PieceCard";
 import styles from "./ChessPieceCreation.module.css";
 import ChessPiece from "../../classes/ChessPiece";
+import { Gameset } from "../../classes/Gameset";
 
 const gridDimensionality = 7; // the field for defining piece moves should be limited, not so for game board.
 // If we wanted to provide total freedom on defining the moves,
@@ -44,8 +45,48 @@ const ChessPieceCreation: React.FC = () => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   console.log(backendUrl);
 
+  useEffect(() => {
+    if (activePiece && activeGame) {
+      const updatedPieces = gamePieces.map((piece) =>
+        piece.symbol === activePiece.symbol ? activePiece : piece
+      );
+
+      const updatedGame = new Gameset({
+        ...activeGame,
+        pieces: updatedPieces,
+      });
+
+      setGamePieces(updatedPieces);
+      setActiveGame(updatedGame);
+    }
+  }, [activePiece]);
+
   const handlePieceClick = (piece: ChessPiece) => {
     setActivePiece(piece);
+  };
+
+  const handleSymbolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSymbol = e.target.value;
+
+    if (activePiece && activeGame) {
+      const updatedPiece = new ChessPiece({
+        ...activePiece,
+        symbol: newSymbol,
+      });
+
+      const updatedPieces = gamePieces.map((piece) =>
+        piece.symbol === activePiece.symbol ? updatedPiece : piece
+      );
+
+      const updatedGame = new Gameset({
+        ...activeGame,
+        pieces: updatedPieces,
+      });
+
+      setActivePiece(updatedPiece);
+      setGamePieces(updatedPieces);
+      setActiveGame(updatedGame);
+    }
   };
 
   const handleCheckboxChange = (property: string) => {
@@ -182,11 +223,7 @@ const ChessPieceCreation: React.FC = () => {
                       type="text"
                       value={activePiece.symbol}
                       onChange={(e) => {
-                        const updatedPiece = new ChessPiece({
-                          ...activePiece,
-                          symbol: e.target.value,
-                        });
-                        setActivePiece(updatedPiece);
+                        handleSymbolChange(e);
                       }}
                     />
                   </div>

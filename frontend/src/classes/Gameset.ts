@@ -6,8 +6,8 @@ export interface GamesetConfig {
   pieces: any[];
   board: any;
   name: string;
-  white_coefficients: [number, number, number, number];
-  black_coefficients: [number, number, number, number];
+  whiteCoefficients: [number, number, number, number];
+  blackCoefficients: [number, number, number, number];
 }
 
 export class Gameset {
@@ -24,8 +24,8 @@ export class Gameset {
     this.name = config.name;
     this.pieceMapping = new PieceMapping();
     this.pieceMapping.addAllPieces(this.pieces);
-    this.whiteCoefficients = config.white_coefficients;
-    this.blackCoefficients = config.black_coefficients;
+    this.whiteCoefficients = config.whiteCoefficients;
+    this.blackCoefficients = config.blackCoefficients;
   }
 
   toJSON() {
@@ -33,8 +33,8 @@ export class Gameset {
       pieces: this.pieces.map((piece) => piece.toJSON()),
       board: this.board.toJSON(),
       name: this.name,
-      white_coefficients: this.whiteCoefficients,
-      black_coefficients: this.blackCoefficients,
+      whiteCoefficients: this.whiteCoefficients,
+      blackCoefficients: this.blackCoefficients,
     };
   }
 }

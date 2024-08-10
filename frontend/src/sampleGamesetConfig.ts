@@ -102,13 +102,10 @@ const sampleGamesetConfig: GamesetConfig = {
   board: {
     rows: 8,
     columns: 8,
-    board: Array(8)
-      .fill(null)
-      .map(() => Array(8).fill(null)),
   },
   name: "Chess",
-  white_coefficients: [1, 1, 1, 1],
-  black_coefficients: [1, 1, 1, 1],
+  whiteCoefficients: [1, 1, 1, 1],
+  blackCoefficients: [1, 1, 1, 1],
 };
 
 export default sampleGamesetConfig;
