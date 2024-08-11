@@ -1,5 +1,5 @@
 .container {
-    background-color: #566F10;
+    background-color: #566f10;
     padding: 2%;
     border-radius: 10px;
     min-width: 40%;
@@ -7,7 +7,7 @@
 
 .header {
     font-size: 24px;
-    color: #FFD955;
+    color: #ffd955;
     text-align: left;
 }
 
@@ -17,7 +17,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 5%;
-    background-color: #799A41;
+    background-color: #799a41;
     padding: 2% 6%;
     border-radius: 5px;
     margin: 2% 0;
@@ -27,7 +27,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: #FFD955;
+    color: #ffd955;
     font-size: 18px;
 }
 
@@ -54,7 +54,7 @@
 .cell {
     width: 4dvw;
     height: 8dvh;
-    background-color: #799A41;
+    background-color: #799a41;
     border: 1px solid #ffde56;
     box-sizing: border-box;
     display: flex;
@@ -71,6 +71,12 @@
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
 }
+.cellPiece.b {
+    background-color: #866a06;
+}
+.cellPiece.w {
+    background-color: #ffd955;
+}
 
 .buttons {
     display: flex;
@@ -83,16 +89,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #799A41;
+    background-color: #799a41;
     border: 1px solid transparent;
     padding: 1.5% 3%;
     border-radius: 10px;
-    color: #FFD955;
+    color: #ffd955;
     font-size: 18px;
     transition: all 0.1s;
     cursor: pointer;
 }
 
 .button:hover {
-    border: 1px solid #FFD955;
+    border: 1px solid #ffd955;
 }

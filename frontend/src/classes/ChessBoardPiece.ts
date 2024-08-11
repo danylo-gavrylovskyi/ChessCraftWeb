@@ -1,22 +1,18 @@
 class ChessBoardPiece {
-  piece: string;
-  color: string;
+    piece: string;
+    color: string;
 
-  constructor(piece: string, color: string) {
-    this.piece = piece;
-    this.color = color;
-  }
+    constructor(data: { piece: string; color: string }) {
+        this.piece = data.piece;
+        this.color = data.color;
+    }
 
-  toJSON() {
-    return {
-      p: this.piece,
-      c: this.color,
-    };
-  }
-
-  static fromJSON(data: { p: string; c: string }): ChessBoardPiece {
-    return new ChessBoardPiece(data.p, data.c);
-  }
+    toJSON() {
+        return {
+            piece: this.piece,
+            color: this.color,
+        };
+    }
 }
 
 export default ChessBoardPiece;
