@@ -1,0 +1,104 @@
+.container {
+    background-color: #566f10;
+    padding: 2%;
+    border-radius: 10px;
+    min-width: 40%;
+}
+
+.header {
+    font-size: 24px;
+    color: #ffd955;
+    text-align: left;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5%;
+    background-color: #799a41;
+    padding: 2% 6%;
+    border-radius: 5px;
+    margin: 2% 0;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffd955;
+    font-size: 18px;
+}
+
+.instructions p {
+    margin: 0;
+}
+
+.pieces {
+    margin-top: 5%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.board {
+    display: grid;
+    gap: 0;
+    border-collapse: collapse;
+}
+
+.row {
+    display: contents;
+}
+
+.cell {
+    width: 4dvw;
+    height: 8dvh;
+    background-color: #799a41;
+    border: 1px solid #ffde56;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cellPiece {
+    width: 90%;
+    height: 90%;
+    background-color: #ffd955;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+.cellPiece.b {
+    background-color: #866a06;
+}
+.cellPiece.w {
+    background-color: #ffd955;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #799a41;
+    border: 1px solid transparent;
+    padding: 1.5% 3%;
+    border-radius: 10px;
+    color: #ffd955;
+    font-size: 18px;
+    transition: all 0.1s;
+    cursor: pointer;
+}
+
+.button:hover {
+    border: 1px solid #ffd955;
+}

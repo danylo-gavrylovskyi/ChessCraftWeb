@@ -1,0 +1,51 @@
+.exitPanel {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    width: auto;
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+    position: absolute;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.exitPanel.closing {
+    animation-name: fadeOut;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+}
+
+.horizontal {
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,263 @@
+:root {
+  --primary-color: #566f10;
+  --secondary-color: #799a41;
+  --ternary-color: #889a41;
+  --highlight-color: #ffd955;
+  --text-color: var(--highlight-color);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  flex: 3;
+}
+
+h2 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.pieceList {
+  display: flex;
+  flex: 3;
+  overflow-x: auto;
+}
+
+.middle {
+  display: grid;
+  grid-template-columns: 2fr 1fr 3fr 1fr;
+  gap: 10px;
+  flex: 10;
+  padding: 10px;
+  background-color: rgba(255, 217, 85, 0.1);
+}
+
+.pieceEditor {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pieceDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.pieceInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 2;
+  height: 100%;
+}
+
+.pieceInfo input {
+  margin: 10px;
+  height: min-content;
+}
+
+.pieceInfo .labelAndInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+label {
+  color: var(--text-color);
+}
+
+.optionalProperties {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.defineMoves {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.defineMoves h3 {
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.movesTable {
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.movesTable td {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--primary-color);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.centralCell {
+  background-color: var(--primary-color);
+}
+
+.activeCell {
+  background-color: var(--highlight-color);
+}
+
+.inactiveCell {
+  background-color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.inactiveCell:hover {
+  background-color: rgba(255, 217, 85, 0.3);
+}
+
+.centralDot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--highlight-color);
+  border-radius: 50%;
+}
+
+.buttonsColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.buttonsColumn button {
+  margin: 5px 0;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--primary-color);
+}
+
+.button {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--secondary-color);
+  border: 1px solid transparent;
+  padding: 1.5% 3%;
+  border-radius: 10px;
+  color: var(--text-color);
+  font-size: 18px;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.button:hover {
+  border: 1px solid var(--highlight-color);
+}
+
+.svgPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 10%;
+  flex: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  background-color: var(--highlight-color);
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.name {
+  margin-top: 5px;
+  color: var(--highlight-color);
+}
+
+.optionalProperties {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.checkboxContainer {
+  position: relative;
+}
+
+.checkboxLabel {
+  cursor: pointer;
+}
+
+.checkboxLabel:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  font-size: 0.8em;
+}
+
+.checkboxLabel {
+  cursor: pointer;
+  color: var(--text-color);
+  border-radius: 5px;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--highlight-color);
+}
+
+.checkboxLabel:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  font-size: 0.8em;
+}
